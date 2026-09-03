@@ -9,9 +9,20 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/looooda')
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use((req, res, next) => {
+  console.log("Request aaya:", req.url);
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,5 +48,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
